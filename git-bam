@@ -1,0 +1,14 @@
+#!/bin/bash
+dirty () {
+  test -z "$(git diff-index --quiet HEAD)" || test -z "$(git --exclude-standard ls-files --others)"
+}
+
+while dirty;
+do 
+  git add -p -A
+  git commit
+done
+
+git fetch origin
+git rebase -i origin/master
+git status
